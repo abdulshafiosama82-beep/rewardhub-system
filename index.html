@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>المنصة التفاعلية الشاملة</title>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family:  Tajawal , sans-serif;
+    }
+
+    body {
+      background-color: #f8fafc;
+      color: #1e293b;
+      padding: 15px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .main-container {
+      width: 100%;
+      max-width: 480px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    /* التنقل العلوي */
+    .nav-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      background: #ffffff;
+      padding: 12px;
+      border-radius: 16px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+    }
+
+    .tab-item {
+      background-color: #f1f5f9;
+      color: #475569;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .tab-item.active {
+      background-color: #caa371;
+      color: #ffffff;
+    }
+
+    /* الكروت */
+    .card {
+      background-color: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    }
+
+    /* التنقل بين الأقسام */
+    .page-section {
+      display: none;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    .page-section.active {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* الأزرار والحقول */
+    .btn-primary {
+      background-color: #2563eb;
+      color: #fff;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .btn-block { width: 100%; padding: 12px; }
+
+    .input-field {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      outline: none;
+    }
+
+    /* شبكة الحظ */
+    .grid-wheel {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .grid-box {
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      padding: 15px 5px;
+      text-align: center;
+      font-size: 0.85rem;
+      font-weight: bold;
+    }
+
+    .grid-box.spin-btn {
+      background: #ef4444;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .grid-box.active {
+      border-color: #caa371;
+      background: #fef3c7;
+    }
+
+    /* المهام */
+    .task-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px;
+      background: #f8fafc;
+      border-radius: 8px;
+      margin-bottom: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="main-container">
+
+    <!-- شريط التبويبات -->
+    <div class="nav-tabs">
+      <button class="tab-item active" onclick="switchTab( home , this)">🏠 الرئيسية</button>
+      <button class="tab-item" onclick="switchTab( cards , this)">🎁 بطاقات الحظ</button>
+      <button class="tab-item" onclick="switchTab( tournaments , this)">🏆 البطولات</button>
+      <button class="tab-item" onclick="switchTab( tasks , this)">📋 المهام</button>
+      <button class="tab-item" onclick="switchTab( community , this)">💬 المجتمع</button>
+      <button class="tab-item" onclick="switchTab( browse , this)">🌐 التصفح</button>
+      <button class="tab-item" onclick="switchTab( store , this)">🛒 متجر النقاط</button>
+    </div>
+
+    <!-- 1. الرئيسية -->
+    <div id="section-home" class="page-section active">
+      <h2 style="text-align: center;">لوحة التحكم الرئيسية</h2>
+      
+      <div class="card" style="background:#f0f6ff;">
+        <h3>👤 تسجيل الدخول وتفعيل حسابك</h3>
+        <p style="font-size: 0.85rem; color:#64748b; margin: 8px 0;">أدخل اسمك لإنشاء رابط الإحالة الخاص بك أوتوماتيكياً:</p>
+        <input type="text" id="username-input" class="input-field" placeholder="أدخل اسمك (مثل: osama)">
+        <button class="btn-primary btn-block" onclick="activateAccount()">حفظ وتفعيل</button>
+      </div>
+
+      <div class="card">
+        <div>رصيدك الحالي</div>
+        <h2 id="disp-balance" style="color:#2563eb;">0.00 جنيه</h2>
+      </div>
+
+      <div class="card">
+        <div>نقاطك المجمعة</div>
+        <h2 id="disp-points" style="color:#caa371;">0 نقطة</h2>
+      </div>
+
+      <div class="card" id="ref-card" style="display: none;">
+        <div>🔗 رابط الإحالة الخاص بك:</div>
+        <input type="text" id="ref-url" class="input-field" readonly style="margin-top:8px;">
+        <button class="btn-primary btn-block" onclick="copyRefLink()">نسخ الرابط</button>
+      </div>
+    </div>
+
+    <!-- 2. بطاقات الحظ -->
+    <div id="section-cards" class="page-section">
+      <div class="card">
+        <h3>🎁 عجلة بطاقات الحظ</h3>
+        <p style="font-size: 0.8rem; color:#64748b; margin-bottom:10px;">اضغط للبدء وسيدور المربع لتحديد جائزتك!</p>
+        
+        <div class="grid-wheel">
+          <div class="grid-box" id="slot-0">🎁 10 نقاط</div>
+          <div class="grid-box" id="slot-1">🔥 50 نقطة</div>
+          <div class="grid-box" id="slot-2">⌚ ساعة ذكية</div>
+          <div class="grid-box" id="slot-7">💵 5 جنيه</div>
+          <div class="grid-box spin-btn" onclick="startSpin()">🎯 إبدأ</div>
+          <div class="grid-box" id="slot-3">🌟 200 نقطة</div>
+          <div class="grid-box" id="slot-6">🎁 5 نقاط</div>
+          <div class="grid-box" id="slot-5">💎 100 نقطة</div>
+          <div class="grid-box" id="slot-4">❌ حظ أوفر</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. البطولات -->
+    <div id="section-tournaments" class="page-section">
+      <div class="card">
+        <h3>🏆 البطولة الحالية (8 مقاعد)</h3>
+        <p style="color:#caa371; margin:10px 0;">الحالة: بانتظار انضمام اللاعبين...</p>
+        <p style="font-size:0.85rem; margin-bottom:12px;">رسوم الدخول: 50 نقطة | الجائزة: 20 جنيه كاش</p>
+        <button class="btn-primary btn-block" onclick="joinTournament(this)">حجز مقعد الآن</button>
+      </div>
+    </div>
+
+    <!-- 4. المهام -->
+    <div id="section-tasks" class="page-section">
+      <div class="card">
+        <h3>📋 المهام اليومية والمكافآت</h3>
+        <div style="margin-top:10px;">
+          <div class="task-item">
+            <span>• دعوة 5 أعضاء (50 نقطة)</span>
+            <span id="task-invite-status" style="font-weight:bold; color:#caa371;">0/5</span>
+          </div>
+          <div class="task-item">
+            <span>• التواجد بالموقع 10 دقائق (30 نقطة)</span>
+            <span id="task-timer" style="font-weight:bold; color:#2563eb;">10:00</span>
+          </div>
+          <div class="task-item">
+            <span>• نشر مشاركة في المجتمع (20 نقطة)</span>
+            <span id="task-post-status" style="font-weight:bold; color:#caa371;">لم تكتمل</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. المجتمع -->
+    <div id="section-community" class="page-section">
+      <div class="card">
+        <h3>💬 مجتمع الأعضاء</h3>
+        <textarea id="post-text" class="input-field" style="height:70px;" placeholder="اكتب مشاركتك هنا..."></textarea>
+        <button class="btn-primary btn-block" onclick="publishPost()">نشر</button>
+        <div id="posts-container" style="margin-top:12px; display:flex; flex-direction:column; gap:8px;"></div>
+      </div>
+    </div>
+
+    <!-- 6. التصفح -->
+    <div id="section-browse" class="page-section">
+      <div class="card">
+        <h3>🌐 قسم التصفح والأخبار</h3>
+        <p style="font-size:0.85rem; color:#64748b; margin-top:8px;">تصفح المنشورات والمقالات لزيادة تفاعلك ورصيدك!</p>
+      </div>
+    </div>
+
+    <!-- 7. متجر النقاط -->
+    <div id="section-store" class="page-section">
+      <div class="card">
+        <h3>🛒 متجر تحويل النقاط</h3>
+        <p style="font-size:0.85rem; margin:10px 0;">معدل التحويل: كل 100 نقطة = 1.00 جنيه</p>
+        <button class="btn-primary btn-block" style="background:#10b981;" onclick="convertPointsToCash()">تحويل النقاط لكاش 💵</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- السكريبت والربط البرمجي الكامل -->
+  <script>
+    // 1. النظام والحالة العامة
+    let state = {
+      username: localStorage.getItem( username ) ||   ,
+      points: parseInt(localStorage.getItem( points )) || 0,
+      balance: parseFloat(localStorage.getItem( balance )) || 0.00,
+      isSpinning: false
+    };
+
+    // 2. إعدادات المهام والشروط
+    const TASKS = {
+      timer: { targetSeconds: 10 * 60, reward: 30, key:  t_timer_done  },
+      post: { reward: 20, key:  t_post_done  },
+      invite: { target: 5, reward: 50, key:  t_invites  }
+    };
+
+    let taskData = {
+      timerDone: localStorage.getItem(TASKS.timer.key) ===  true ,
+      postDone: localStorage.getItem(TASKS.post.key) ===  true ,
+      invites: parseInt(localStorage.getItem(TASKS.invite.key)) || 0,
+      timeSpent: parseInt(localStorage.getItem( user_time_spent )) || 0
+    };
+
+    // 3. تحديث الواجهة
+    function updateUI() {
+      document.getElementById( disp-points ).innerText = state.points + " نقطة";
+      document.getElementById( disp-balance ).innerText = state.balance.toFixed(2) + " جنيه";
+      
+      if(state.username) {
+        document.getElementById( username-input ).value = state.username;
+        document.getElementById( ref-card ).style.display =  block ;
+        document.getElementById( ref-url ).value = window.location.origin + window.location.pathname +  ?ref=  + state.username;
+      }
+      
+      localStorage.setItem( username , state.username);
+      localStorage.setItem( points , state.points);
+      localStorage.setItem( balance , state.balance);
+      renderTasksStatus();
+    }
+
+    // 4. التنقل بين الأقسام
+    function switchTab(tabId, btn) {
+      document.querySelectorAll( .page-section ).forEach(sec => sec.classList.remove( active ));
+      document.querySelectorAll( .tab-item ).forEach(tb => tb.classList.remove( active ));
+      
+      document.getElementById( section-  + tabId).classList.add( active );
+      btn.classList.add( active );
+    }
+
+    // 5. تفعيل الحساب
+    function activateAccount() {
+      let val = document.getElementById( username-input ).value.trim();
+      if(!val) return alert("برجاء إدخال اسمك أولاً!");
+      
+      state.username = val;
+      updateUI();
+      alert("تم حفظ بياناتك وتفعيل رابط الإحالة بنجاح!");
+    }
+
+    function copyRefLink() {
+      let link = document.getElementById( ref-url );
+      link.select();
+      navigator.clipboard.writeText(link.value);
+      alert("تم نسخ رابط الإحالة!");
+    }
+
+    // 6. إضافة النقاط والمكافآت
+    function awardPoints(amount, taskTitle) {
+      state.points += amount;
+      updateUI();
+      alert(`🎉 مبروك! أتممت مهمة [${taskTitle}] وحصلت على ${amount} نقطة!`);
+    }
+
+    // 7. محرك المهام والعداد التنازلي
+    setInterval(() => {
+      if (!taskData.timerDone) {
+        taskData.timeSpent++;
+        localStorage.setItem( user_time_spent , taskData.timeSpent);
+
+        let rem = TASKS.timer.targetSeconds - taskData.timeSpent;
+
+        if (rem <= 0) {
+          taskData.timerDone = true;
+          localStorage.setItem(TASKS.timer.key,  true );
+          awardPoints(TASKS.timer.reward, "التواجد بالموقع 10 دقائق");
+        }
+      }
+      renderTasksStatus();
+    }, 1000);
+
+    function renderTasksStatus() {
+      // عداد الوقت
+      const timerEl = document.getElementById( task-timer );
+      if (timerEl) {
+        if (taskData.timerDone) {
+          timerEl.innerText = "مكتملة ✅";
+          timerEl.style.color = "#10b981";
+        } else {
+          let rem = TASKS.timer.targetSeconds - taskData.timeSpent;
+          let m = Math.floor(Math.max(0, rem) / 60).toString().padStart(2,  0 );
+          let s = (Math.max(0, rem) % 60).toString().padStart(2,  0 );
+          timerEl.innerText = `${m}:${s}`;
+        }
+      }
+
+      // مهمة المنشور
+      const postEl = document.getElementById( task-post-status );
+      if (postEl) {
+        if (taskData.postDone) {
+          postEl.innerText = "مكتملة ✅";
+          postEl.style.color = "#10b981";
+        }
+      }
+
+      // مهمة الإحالات
+      const inviteEl = document.getElementById( task-invite-status );
+      if (inviteEl) {
+        if (taskData.invites >= TASKS.invite.target) {
+          inviteEl.innerText = "مكتملة ✅";
+          inviteEl.style.color = "#10b981";
+        } else {
+          inviteEl.innerText = `${taskData.invites}/${TASKS.invite.target}`;
+        }
+      }
+    }
+
+    // 8. شرط مهمة نشر المنشور
+    function publishPost() {
+      let txt = document.getElementById( post-text ).value.trim();
+      if(!txt) return alert("اكتب شيئاً أولاً!");
+
+      let div = document.createElement( div );
+      div.style.cssText = "background:#f1f5f9; padding:10px; border-radius:8px; font-size:0.85rem;";
+      div.innerText = (state.username || "عضو") + ": " + txt;
+      document.getElementById( posts-container ).prepend(div);
+      document.getElementById( post-text ).value =   ;
+
+      // فحص شرط إضافة نقاط المنشور
+      if (!taskData.postDone) {
+        taskData.postDone = true;
+        localStorage.setItem(TASKS.post.key,  true );
+        awardPoints(TASKS.post.reward, "نشر مشاركة جديدة");
+      }
+    }
+
+    // 9. عجلة الحظ
+    const slots = [0, 1, 2, 3, 4, 5, 6, 7];
+    const prizes = [
+      { name: "10 نقاط", type: "pts", val: 10 },
+      { name: "50 نقطة", type: "pts", val: 50 },
+      { name: "ساعة ذكية ⌚", type: "gift", val: 0 },
+      { name: "200 نقطة", type: "pts", val: 200 },
+      { name: "حظ أوفر ❌", type: "none", val: 0 },
+      { name: "100 نقطة", type: "pts", val: 100 },
+      { name: "5 نقاط", type: "pts", val: 5 },
+      { name: "5 جنيه كاش 💵", type: "cash", val: 5 }
+    ];
+
+    function startSpin() {
+      if (state.isSpinning) return;
+      state.isSpinning = true;
+
+      let step = 0;
+      let totalSteps = 16 + Math.floor(Math.random() * 8);
+
+      function run() {
+        slots.forEach(s => document.getElementById(`slot-${s}`).classList.remove( active ));
+        let activeIdx = slots[step % slots.length];
+        document.getElementById(`slot-${activeIdx}`).classList.add( active );
+
+        step++;
+        if (step < totalSteps) {
+          setTimeout(run, 100);
+        } else {
+          state.isSpinning = false;
+          let prize = prizes[(step - 1) % slots.length];
+          
+          if(prize.type ===  pts ) state.points += prize.val;
+          if(prize.type ===  cash ) state.balance += prize.val;
+          
+          updateUI();
+          alert(`مبروك! حصلت على: ${prize.name}`);
+        }
+      }
+      run();
+    }
+
+    // 10. البطولات والمتجر
+    function joinTournament(btn) {
+      if(state.points < 50) return alert("عذراً، تحتاج إلى 50 نقطة لدخول البطولة!");
+      state.points -= 50;
+      updateUI();
+      btn.innerText = "تم حجز المقعد بنجاح ✅";
+      btn.disabled = true;
+      btn.style.background = "#10b981";
+    }
+
+    function convertPointsToCash() {
+      if(state.points < 100) return alert("الحد الأدنى للتحويل هو 100 نقطة!");
+      let cashGained = Math.floor(state.points / 100);
+      state.points -= cashGained * 100;
+      state.balance += cashGained;
+      updateUI();
+      alert(`تم تحويل النقاط بنجاح إلى ${cashGained} جنيه!`);
+    }
+
+    // بدء تشغيل الحساب عند التحميل
+    updateUI();
+  </script>
+</body>
+</html>
