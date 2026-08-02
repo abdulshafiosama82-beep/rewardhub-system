@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>موقع CASH - بطاقات الحظ</title>
+    <!-- استيراد خط كايو الأنيق -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --sidebar-bg: #fcfcfc;
+            --btn-color: #c9a678;
+            --btn-hover: #b89364;
+            --text-color: #222222;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family:  Cairo , sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* الشريط الجانبي */
+        .sidebar {
+            width: 270px;
+            background-color: var(--sidebar-bg);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            padding: 30px 15px;
+            border-left: 1px solid #eeeeee;
+            height: 100vh;
+            position: sticky;
+            top: 0;
+        }
+
+        .nav-btn {
+            background-color: var(--btn-color);
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-align: center;
+            padding: 12px 20px;
+            border-radius: 50px;
+            transition: background-color 0.3s, transform 0.2s;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.04);
+            border: none;
+            cursor: pointer;
+        }
+
+        .nav-btn:hover, .nav-btn.active {
+            background-color: var(--btn-hover);
+            transform: scale(1.02);
+        }
+
+        /* منطقة المحتوى الرئيسي */
+        .main-content {
+            flex: 1;
+            padding: 40px;
+            overflow-y: auto;
+        }
+
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .welcome-title {
+            font-size: 1.85rem;
+            font-weight: 700;
+            line-height: 1.9;
+            max-width: 800px;
+        }
+
+        .welcome-title .cash {
+            font-weight: 900;
+            color: #000;
+            background-color: #f1f5f9;
+            padding: 0 8px;
+            border-radius: 6px;
+        }
+
+        /* تنسيقات قسم بطاقات الحظ */
+        .luck-section-header {
+            margin-bottom: 30px;
+        }
+
+        .luck-section-header h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .luck-section-header p {
+            color: #64748b;
+            font-size: 1.1rem;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            max-width: 900px;
+            margin-bottom: 25px;
+        }
+
+        .luck-card {
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            color: #fff;
+            height: 220px;
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            text-align: center;
+            padding: 20px;
+            border: 4px solid transparent;
+            transition: border-color 0.15s ease;
+        }
+
+        .luck-card.spinning-active {
+            border-color: #ef4444 !important;
+            box-shadow: 0 0 20px rgba(239, 68, 68, 0.6);
+        }
+
+        .luck-card .card-front {
+            font-size: 1.2rem;
+            font-weight: 700;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .luck-card .card-front span {
+            font-size: 2.5rem;
+        }
+
+        .luck-card .card-prize {
+            position: absolute;
+            inset: 0;
+            background-color: #c9a678;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.25rem;
+            font-weight: 900;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 0.4s ease;
+            padding: 10px;
+        }
+
+        .luck-card.revealed .card-prize {
+            opacity: 1;
+            transform: scale(1);
+            border: 4px solid #16a34a;
+        }
+
+        .action-box {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 400px;
+        }
+
+        .spin-btn {
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .spin-btn:hover {
+            background-color: #1d4ed8;
+        }
+
+        .spin-btn:disabled {
+            background-color: #94a3b8;
+            cursor: not-allowed;
+        }
+
+        .claim-btn {
+            display: none;
+            background-color: #16a34a;
+            color: white;
+            text-decoration: none;
+            text-align: center;
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border-radius: 10px;
+            transition: background-color 0.3s;
+            box-shadow: 0 4px 10px rgba(22, 163, 74, 0.3);
+        }
+
+        .claim-btn:hover {
+            background-color: #15803d;
+        }
+
+        .result-msg {
+            font-size: 1.25rem;
+            font-weight: 700;
+            min-height: 40px;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+                padding: 15px;
+            }
+            .nav-btn {
+                flex: 1 1 40%;
+                font-size: 0.95rem;
+                padding: 10px;
+            }
+            .main-content {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- الشريط الجانبي -->
+    <aside class="sidebar">
+        <button class="nav-btn active" data-target="home">الصفحة الرئيسية</button>
+        <button class="nav-btn" data-target="luck">بطاقات الحظ</button>
+        <button class="nav-btn" data-target="tournaments">البطولات</button>
+        <button class="nav-btn" data-target="tasks">المهام</button>
+        <button class="nav-btn" data-target="community">المجتمع</button>
+        <button class="nav-btn" data-target="browse">التصفح</button>
+    </aside>
+
+    <!-- محتوى الصفحة -->
+    <main class="main-content">
+        
+        <section id="home" class="section active">
+            <h1 class="welcome-title">
+                اهلا بيكم في موقع <span class="cash">CASH</span> لربح الجوائز والتحديات المليئة بالارباح الشهريه.
+            </h1>
+        </section>
+
+        <section id="luck" class="section">
+            <div class="luck-section-header">
+                <h2>بطاقات الحظ اليومية</h2>
+                <p>اضغط على زر ابدأ السحب ودع المربع الأحمر يختار جائزتك!</p>
+            </div>
+
+            <div class="cards-grid" id="cardsGrid">
+                <div class="luck-card" data-index="0">
+                    <div class="card-front"><span>🎁</span> بطاقة #1</div>
+                    <div class="card-prize"></div>
+                </div>
+                <div class="luck-card" data-index="1">
+                    <div class="card-front"><span>🎁</span> بطاقة #2</div>
+                    <div class="card-prize"></div>
+                </div>
+                <div class="luck-card" data-index="2">
+                    <div class="card-front"><span>🎁</span> بطاقة #3</div>
+                    <div class="card-prize"></div>
+                </div>
+                <div class="luck-card" data-index="3">
+                    <div class="card-front"><span>🎁</span> بطاقة #4</div>
+                    <div class="card-prize"></div>
+                </div>
+            </div>
+
+            <div class="action-box">
+                <button class="spin-btn" id="spinBtn">ابدأ السحب (11 ثانية)</button>
+                <div class="result-msg" id="resultMsg"></div>
+                <a href="#" class="claim-btn" id="claimBtn" target="_blank">المطالبة بالجائزة</a>
+            </div>
+        </section>
+
+        <section id="tournaments" class="section">
+            <h2>البطولات النشطة</h2>
+            <p>قريباً جداً تفاصيل البطولات الكبرى والجوائز المالية.</p>
+        </section>
+        <section id="tasks" class="section">
+            <h2>مهام اليوم</h2>
+            <p>أتمم المهام لزيادة فرصك في الربح.</p>
+        </section>
+        <section id="community" class="section">
+            <h2>مجتمع المتسابقين</h2>
+            <p>تواصل مع الأعضاء وشارك أرباحك.</p>
+        </section>
+        <section id="browse" class="section">
+            <h2>تصفح أقسام الموقع</h2>
+            <p>استكشف المزيد من الأدوات والخدمات.</p>
+        </section>
+
+    </main>
+
+    <script>
+        // تفعيل التنقل بين الأقسام مباشرة
+        const navButtons = document.querySelectorAll( .nav-btn );
+        const sections = document.querySelectorAll( .section );
+
+        navButtons.forEach(button => {
+            button.addEventListener( click , () => {
+                const targetId = button.getAttribute( data-target );
+
+                navButtons.forEach(btn => btn.classList.remove( active ));
+                sections.forEach(sec => sec.classList.remove( active ));
+
+                button.classList.add( active );
+                const targetSection = document.getElementById(targetId);
+                if (targetSection) {
+                    targetSection.classList.add( active );
+                }
+            });
+        });
+
+        // زر بدء السحب
+        const spinBtnElement = document.getElementById( spinBtn );
+        if (spinBtnElement) {
+            spinBtnElement.addEventListener( click , startLuckySpin);
+        }
+
+        const prizes = [
+            { name: "سماعة اير بودز 🎧", weight: 1 },
+            { name: "ساعة سمارت ⌚", weight: 2 },
+            { name: "200 جنيه كاش 💵", weight: 3 },
+            { name: "حظ أوفر 😢", weight: 80 },
+            { name: "560 جنيه كاش 💵", weight: 2 },
+            { name: "50 نقطة ⭐", weight: 40 },
+            { name: "780 جنيه كاش 💵", weight: 3 },
+            { name: "1500 جنيه كاش 🏆", weight: 0 }
+        ];
+
+        function getRandomPrize() {
+            const availablePrizes = prizes.filter(p => p.weight > 0);
+            const totalWeight = availablePrizes.reduce((sum, p) => sum + p.weight, 0);
+            let randomNum = Math.random() * totalWeight;
+
+            for (let prize of availablePrizes) {
+                if (randomNum < prize.weight) {
+                    return prize.name;
+                }
+                randomNum -= prize.weight;
+            }
+            return "حظ أوفر 😢";
+        }
+
+        let hasPlayedToday = false;
+
+        function startLuckySpin() {
+            if (hasPlayedToday) {
+                alert( لقد قمت بالسحب اليوم! انتظر لغدٍ للمحاولة مجدداً. );
+                return;
+            }
+
+            const spinBtn = document.getElementById( spinBtn );
+            const resultMsg = document.getElementById( resultMsg );
+            const claimBtn = document.getElementById( claimBtn );
+            const cards = document.querySelectorAll( .luck-card );
+
+            spinBtn.disabled = true;
+            resultMsg.textContent = "جاري تدوير الحظ واختيار البطاقة...";
+            resultMsg.style.color = "#d97706";
+            claimBtn.style.display = "none";
+
+            const wonPrize = getRandomPrize();
+            const winningCardIndex = Math.floor(Math.random() * cards.length);
+
+            let currentIndex = 0;
+            let speed = 120;
+            let elapsedTime = 0;
+            const totalDuration = 11000;
+
+            const spinInterval = setInterval(() => {
+                cards.forEach(c => c.classList.remove( spinning-active ));
+                cards[currentIndex].classList.add( spinning-active );
+                
+                currentIndex = (currentIndex + 1) % cards.length;
+                elapsedTime += speed;
+
+                if (elapsedTime > 8500) {
+                    speed = 350;
+                }
+
+                if (elapsedTime >= totalDuration) {
+                    clearInterval(spinInterval);
+
+                    cards.forEach(c => c.classList.remove( spinning-active ));
+                    const winningCard = cards[winningCardIndex];
+                    
+                    winningCard.querySelector( .card-prize ).textContent = wonPrize;
+                    winningCard.classList.add( revealed );
+                    hasPlayedToday = true;
+
+                    if (wonPrize.includes("حظ أوفر")) {
+                        resultMsg.style.color = "#dc2626";
+                        resultMsg.textContent = "للأسف! " + wonPrize;
+                    } else {
+                        resultMsg.style.color = "#16a34a";
+                        resultMsg.textContent = "مبروك! لقد فزت بـ: " + wonPrize;
+                        
+                        const emailSubject = encodeURIComponent("طلب استلام جائزة من موقع CASH");
+                        const emailBody = encodeURIComponent("مرحباً أسامة،\n\nلقد فزت بالجائزة التالية في بطاقات الحظ:\n" + wonPrize + "\n\nأرغب في المطالبة بها.");
+                        claimBtn.href = "mailto:abdulshafiosama82@gmail.com?subject=" + emailSubject + "&body=" + emailBody;
+                        claimBtn.style.display = "block";
+                    }
+                }
+            }, speed);
+        }
+    </script>
+
+</body>
+</html>
