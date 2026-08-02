@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة المهام والبطولات | التقني اسامه عبدالشافي</title>
+    <style>
+        /* ================== التنسيقات العامة ================== */
+        body { font-family:  Segoe UI , Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f6f9; margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: auto; }
+        .card { background: #fff; padding: 20px; margin-bottom: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        h2, h3 { margin-top: 0; color: #2c3e50; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        
+        .btn { background: #007bff; color: #fff; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        .btn:hover { background: #0056b3; }
+        .btn:disabled { background: #ccc; cursor: not-allowed; }
+        
+        /* النقاط والإحالة */
+        .points-badge { font-weight: bold; color: #28a745; font-size: 1.5em; background: #e8f5e9; padding: 5px 10px; border-radius: 5px; }
+        .input-box { width: 70%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; margin-left: 10px; }
+
+        /* المهام والمنشورات */
+        .task-list li { margin-bottom: 12px; font-size: 1.1em; }
+        .task-status { font-weight: bold; color: #e67e22; }
+        textarea { width: 100%; height: 80px; padding: 10px; border: 1px solid #ddd; border-radius: 5px; margin-bottom: 10px; font-family: inherit; resize: vertical; }
+        .post { background: #f8f9fa; border-right: 4px solid #007bff; padding: 15px; margin-top: 15px; border-radius: 5px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        
+        /* البطولة والمقاعد */
+        .slots-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 15px; }
+        .slot { border: 2px dashed #007bff; padding: 15px 5px; text-align: center; border-radius: 8px; background: #eef5ff; font-weight: bold; transition: 0.3s; }
+        .slot.filled { border-style: solid; background: #d4edda; color: #155724; border-color: #28a745; }
+
+        /* ================== بطاقات الحظ (دوران الإطار الأحمر) ================== */
+        .lucky-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; max-width: 320px; margin: 20px auto; }
+        .card-box { background: #ffffff; border: 2px solid #ddd; border-radius: 8px; padding: 20px 5px; text-align: center; font-weight: bold; font-size: 1em; transition: all 0.1s ease; user-select: none; }
+        .spin-btn { background: linear-gradient(135deg, #e74c3c, #c0392b); color: #fff; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.15); transition: transform 0.2s; }
+        .spin-btn:active { transform: scale(0.95); }
+        
+        /* المربع الأحمر المتوهج الدوار */
+        .card-box.active {
+            border: 3px solid #ff0000 !important;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.8), inset 0 0 10px rgba(255, 0, 0, 0.2);
+            background-color: #ffe6e6;
+            transform: scale(1.05);
+            color: #d9534f;
+            z-index: 10;
+        }
+
+        @media (max-width: 600px) {
+            .slots-grid { grid-template-columns: repeat(2, 1fr); }
+            .input-box { width: 100%; margin-bottom: 10px; margin-left: 0; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- 1. لوحة النقاط والرابط -->
+    <div class="card">
+        <h2>مرحباً بك! 👋</h2>
+        <p>رصيد نقاطك الحالي: <span id="userPoints" class="points-badge">0</span> نقطة</p>
+        
+        <h3 style="margin-top: 20px;">رابط الإحالة الخاص بك</h3>
+        <input type="text" id="refLink" class="input-box" readonly>
+        <button class="btn" onclick="copyRefLink()">نسخ الرابط</button>
+    </div>
+
+    <!-- 2. قائمة المهام -->
+    <div class="card">
+        <h3>📋 قائمة المهام اليومية</h3>
+        <ul class="task-list">
+            <li>دعوة 5 أعضاء: <span id="refTaskStatus" class="task-status">0/5</span></li>
+            <li>تصفح قسم المنشورات (10 دقائق): <span id="browseTimer" class="task-status">00:00</span></li>
+            <li>الوقت النشط بالموقع (30 دقيقة): <span id="activeTimer" class="task-status">00:00</span></li>
+            <li>مشاركة منشور في قسم التصفح: <span id="postTaskStatus" class="task-status">لم تكتمل</span></li>
+        </ul>
+    </div>
+
+    <!-- 3. نظام بطاقات الحظ الدوار -->
+    <div class="card" style="text-align: center;">
+        <h3>🎰 عجلة بطاقات الحظ</h3>
+        <p>اضغط للبدء، وسيدور المربع الأحمر ليحدد جائزتك!</p>
+        
+        <div class="lucky-grid">
+            <div class="card-box" id="card-0">🎁 10 نقاط</div>
+            <div class="card-box" id="card-1">🔥 50 نقطة</div>
+            <div class="card-box" id="card-2">❌ حظ أوفر</div>
+            
+            <div class="card-box" id="card-7">⚡ 200 نقطة</div>
+            <button class="spin-btn" id="spinBtn" onclick="spinLuckyCards()">إبدأ الدوران 🔄</button>
+            <div class="card-box" id="card-3">⭐ 20 نقطة</div>
+            
+            <div class="card-box" id="card-6">🎁 5 نقاط</div>
+            <div class="card-box" id="card-5">💎 100 نقطة</div>
+            <div class="card-box" id="card-4">❌ حاول مجدداً</div>
+        </div>
+    </div>
+
+    <!-- 4. نظام البطولة (المقاعد الفارغة) -->
+    <div class="card">
+        <h3>🏆 البطولة الحالية (8 مقاعد)</h3>
+        <p>الحالة: <strong id="tourneyStatus" style="color: #d9534f; font-size: 1.1em;">بانتظار انضمام اللاعبين...</strong></p>
+        <button class="btn" id="joinBtn" onclick="joinTournament()">حجز مقعد الآن</button>
+        
+        <div class="slots-grid" id="slotsContainer">
+            <!-- سيتم توليد المقاعد هنا بواسطة الجافاسكربت -->
+        </div>
+    </div>
+
+    <!-- 5. قسم التصفح والنشر -->
+    <div class="card">
+        <h3>📝 قسم التصفح والمشاركات</h3>
+        <textarea id="postContent" placeholder="اكتب مشاركتك هنا... شارك أفكارك مع الأعضاء!"></textarea>
+        <button class="btn" onclick="publishPost()">نشر المنشور</button>
+        
+        <div id="postsFeed">
+            <!-- ستظهر المنشورات هنا -->
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // ==========================================
+    // 1. نظام المستخدم والنقاط الأساسي
+    // ==========================================
+    function getUserId() {
+        let id = localStorage.getItem( app_user_id );
+        if (!id) {
+            id =  User_  + Math.random().toString(36).substr(2, 6).toUpperCase();
+            localStorage.setItem( app_user_id , id);
+        }
+        return id;
+    }
+
+    function getPoints() {
+        let pts = localStorage.getItem( app_points );
+        if (pts === null) {
+            localStorage.setItem( app_points , 0);
+            return 0;
+        }
+        return parseInt(pts, 10);
+    }
+
+    function addPoints(amount) {
+        let current = getPoints() + amount;
+        localStorage.setItem( app_points , current);
+        document.getElementById( userPoints ).textContent = current;
+    }
+
+    // ==========================================
+    // 2. نظام روابط الإحالة
+    // ==========================================
+    function initReferral() {
+        const userId = getUserId();
+        const refURL = `${window.location.origin}${window.location.pathname}?ref=${userId}`;
+        document.getElementById( refLink ).value = refURL;
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const refBy = urlParams.get( ref );
+        
+        if (refBy && refBy !== userId && !localStorage.getItem( is_referred )) {
+            localStorage.setItem( is_referred ,  true );
+            // هنا يضاف كود إرسال النقطة للمُحيل في قاعدة البيانات لاحقاً
+        }
+
+        let currentRefs = localStorage.getItem( ref_count ) || 0;
+        document.getElementById( refTaskStatus ).textContent = `${currentRefs}/5`;
+    }
+
+    function copyRefLink() {
+        const input = document.getElementById( refLink );
+        input.select();
+        navigator.clipboard.writeText(input.value);
+        alert("تم نسخ رابط الإحالة الخاص بك!");
+    }
+
+    // ==========================================
+    // 3. تتبع الوقت للمهام اليومية
+    // ==========================================
+    let activeSec = parseInt(localStorage.getItem( active_sec ) ||  0 , 10);
+    let browseSec = parseInt(localStorage.getItem( browse_sec ) ||  0 , 10);
+
+    setInterval(() => {
+        // نشاط 30 دقيقة (1800 ثانية)
+        if (activeSec < 1800) {
+            activeSec++;
+            localStorage.setItem( active_sec , activeSec);
+            let m = Math.floor(activeSec / 60);
+            let s = activeSec % 60;
+            document.getElementById( activeTimer ).textContent = `${m}:${s < 10 ?  0 :  }${s}`;
+            
+            if (activeSec === 1800) {
+                addPoints(100);
+                alert("🎉 أكملت 30 دقيقة نشاط! تم إضافة 100 نقطة.");
+            }
+        }
+
+        // تصفح 10 دقائق (600 ثانية)
+        if (browseSec < 600) {
+            browseSec++;
+            localStorage.setItem( browse_sec , browseSec);
+            let m = Math.floor(browseSec / 60);
+            let s = browseSec % 60;
+            document.getElementById( browseTimer ).textContent = `${m}:${s < 10 ?  0 :  }${s}`;
+            
+            if (browseSec === 600) {
+                addPoints(50);
+                alert("🎉 أكملت 10 دقائق تصفح! تم إضافة 50 نقطة.");
+            }
+        }
+    }, 1000);
+
+    // ==========================================
+    // 4. قسم النشر والتصفح
+    // ==========================================
+    function publishPost() {
+        const content = document.getElementById( postContent ).value.trim();
+        if (!content) return alert("لا يمكنك نشر محتوى فارغ!");
+
+        const feed = document.getElementById( postsFeed );
+        const newPost = document.createElement( div );
+        newPost.className =  post ;
+        
+        const now = new Date().toLocaleTimeString( ar-EG );
+        newPost.innerHTML = `
+            <p style="margin-top:0;">${content}</p>
+            <small style="color:#777;">نُشر بواسطة: <strong>${getUserId()}</strong> - ⏱ ${now}</small>
+        `;
+        feed.prepend(newPost);
+        document.getElementById( postContent ).value =   ;
+
+        if (!localStorage.getItem( post_task_done )) {
+            localStorage.setItem( post_task_done ,  true );
+            document.getElementById( postTaskStatus ).textContent = "مكتملة ✅ (تم منح النقاط)";
+            document.getElementById( postTaskStatus ).style.color = "#28a745";
+            addPoints(30);
+            alert("تم نشر أول منشور لك وإضافة 30 نقطة!");
+        }
+    }
+
+    // ==========================================
+    // 5. نظام البطولة وحجز المقاعد (8 مقاعد)
+    // ==========================================
+    const MAX_SLOTS = 8;
+    let tourneyPlayers = JSON.parse(localStorage.getItem( tourney_players ) ||  [] );
+
+    function renderSlots() {
+        const container = document.getElementById( slotsContainer );
+        container.innerHTML =   ;
+
+        for (let i = 0; i < MAX_SLOTS; i++) {
+            const div = document.createElement( div );
+            if (tourneyPlayers[i]) {
+                div.className =  slot filled ;
+                div.innerHTML = `مقعد ${i + 1}<br><small>${tourneyPlayers[i]}</small>`;
+            } else {
+                div.className =  slot ;
+                div.innerHTML = `مقعد ${i + 1}<br><small style="color:#888;">(فارغ)</small>`;
+            }
+            container.appendChild(div);
+        }
+
+        if (tourneyPlayers.length >= MAX_SLOTS) {
+            document.getElementById( tourneyStatus ).textContent = "🔥 بدأت البطولة! (المقاعد مكتملة)";
+            document.getElementById( tourneyStatus ).style.color = "#28a745";
+            document.getElementById( joinBtn ).disabled = true;
+            document.getElementById( joinBtn ).textContent = "التسجيل مغلق";
+        }
+    }
+
+    function joinTournament() {
+        const myId = getUserId();
+        if (tourneyPlayers.includes(myId)) return alert("لقد حجزت مقعداً بالفعل!");
+
+        if (tourneyPlayers.length < MAX_SLOTS) {
+            tourneyPlayers.push(myId);
+            localStorage.setItem( tourney_players , JSON.stringify(tourneyPlayers));
+            renderSlots();
+            
+            if (tourneyPlayers.length === MAX_SLOTS) {
+                alert("🚀 اكتملت كافة المقاعد والبطولة ستبدأ الآن!");
+            }
+        }
+    }
+
+    // ==========================================
+    // 6. نظام بطاقات الحظ المطور (المربع الأحمر الدوار)
+    // ==========================================
+    const luckyPrizes = [
+        { id: 0, pts: 10, name: "10 نقاط" },
+        { id: 1, pts: 50, name: "50 نقطة" },
+        { id: 2, pts: 0, name: "حظ أوفر" },
+        { id: 3, pts: 20, name: "20 نقطة" },
+        { id: 4, pts: 0, name: "حاول مجدداً" },
+        { id: 5, pts: 100, name: "100 نقطة" },
+        { id: 6, pts: 5, name: "5 نقاط" },
+        { id: 7, pts: 200, name: "200 نقطة" }
+    ];
+
+    let isSpinning = false;
+
+    function spinLuckyCards() {
+        if (isSpinning) return;
+        isSpinning = true;
+        document.getElementById( spinBtn ).disabled = true;
+
+        const winIndex = Math.floor(Math.random() * luckyPrizes.length);
+        let currentIndex = 0;
+        let laps = 0;
+        const totalLaps = 3; 
+        let speed = 70; // السرعة الابتدائية
+
+        function step() {
+            // إزالة الإطار من الجميع
+            document.querySelectorAll( .card-box ).forEach(el => el.classList.remove( active ));
+
+            // إضافة الإطار الأحمر للمربع الحالي
+            const currentCard = document.getElementById(`card-${currentIndex}`);
+            if (currentCard) currentCard.classList.add( active );
+
+            // فحص النهاية
+            if (laps >= totalLaps && currentIndex === winIndex) {
+                isSpinning = false;
+                document.getElementById( spinBtn ).disabled = false;
+                
+                setTimeout(() => {
+                    const prize = luckyPrizes[winIndex];
+                    if (prize.pts > 0) {
+                        addPoints(prize.pts);
+                        alert(`🎉 مبروك! لقد ربحت ${prize.name}.`);
+                    } else {
+                        alert(`❌ للأسف، ${prize.name}.`);
+                    }
+                }, 400);
+                return;
+            }
+
+            // الانتقال للبطاقة التالية دائرياً
+            currentIndex = (currentIndex + 1) % luckyPrizes.length;
+            if (currentIndex === 0) laps++;
+
+            // التباطؤ في الدورة الأخيرة
+            if (laps >= totalLaps - 1) speed += 20;
+
+            setTimeout(step, speed);
+        }
+
+        step();
+    }
+
+    // ==========================================
+    // التشغيل عند فتح الصفحة
+    // ==========================================
+    window.addEventListener( DOMContentLoaded , () => {
+        document.getElementById( userPoints ).textContent = getPoints();
+        initReferral();
+        renderSlots();
+        
+        if (localStorage.getItem( post_task_done )) {
+            const taskEl = document.getElementById( postTaskStatus );
+            taskEl.textContent = "مكتملة ✅";
+            taskEl.style.color = "#28a745";
+        }
+    });
+</script>
+
+</body>
+</html>
