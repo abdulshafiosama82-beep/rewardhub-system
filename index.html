@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>لوحة التحكم الرئيسية</title>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family:  Tajawal , sans-serif;
+    }
+
+    body {
+      background-color: #fcfcfc;
+      color: #1e293b;
+      padding: 15px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .main-container {
+      width: 100%;
+      max-width: 450px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    /* 1. قائمة التبويبات العلوية (Navigation Tabs) */
+    .nav-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px 8px;
+      padding: 10px 5px;
+    }
+
+    .tab-item {
+      background-color: transparent;
+      color: #475569;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.2s ease;
+    }
+
+    .tab-item.active {
+      background-color: #caa371; /* اللون البني الفاتح في الصورة */
+      color: #ffffff;
+      box-shadow: 0 2px 6px rgba(202, 163, 113, 0.3);
+    }
+
+    /* 2. عنوان لوحة التحكم */
+    .page-title {
+      text-align: center;
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: #1e293b;
+      margin: 10px 0 5px 0;
+    }
+
+    /* 3. كارت تسجيل الدخول والتفعيل (Card 1) */
+    .activation-card {
+      background-color: #f0f6ff; /* الأزرق الفاتح */
+      border: 1px solid #dbeafe;
+      border-radius: 20px;
+      padding: 20px;
+    }
+
+    .activation-card h3 {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: #0f172a;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .activation-card p {
+      font-size: 0.88rem;
+      color: #64748b;
+      line-height: 1.5;
+      margin-bottom: 16px;
+    }
+
+    .input-group {
+      display: flex;
+      gap: 8px;
+    }
+
+    .input-group input {
+      flex: 1;
+      padding: 12px 14px;
+      border: 1px solid #cbd5e1;
+      border-radius: 12px;
+      font-size: 0.85rem;
+      outline: none;
+      background-color: #ffffff;
+      text-align: right;
+    }
+
+    .input-group input::placeholder {
+      color: #94a3b8;
+    }
+
+    .btn-primary {
+      background-color: #2563eb; /* الأزرق الاحترافي */
+      color: #ffffff;
+      border: none;
+      padding: 12px 18px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.2s;
+    }
+
+    .btn-primary:hover {
+      background-color: #1d4ed8;
+    }
+
+    /* 4. كروت البيانات والاحصائيات (Balance & Points) */
+    .stat-card {
+      background-color: #ffffff;
+      border: 1px solid #f1f5f9;
+      border-radius: 20px;
+      padding: 20px 24px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+    }
+
+    .stat-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #64748b;
+      margin-bottom: 10px;
+    }
+
+    .stat-value {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: #0f172a;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="main-container">
+
+    <!-- 1. التبويبات العلوية -->
+    <div class="nav-tabs">
+      <button class="tab-item active" id="tab-home">🏠 الرئيسية</button>
+      <button class="tab-item" id="tab-cards">🎁 بطاقات الحظ</button>
+      <button class="tab-item" id="tab-tournaments">🏆 البطولات</button>
+      <button class="tab-item" id="tab-tasks">📋 المهام</button>
+      <button class="tab-item" id="tab-community">💬 المجتمع</button>
+      <button class="tab-item" id="tab-browse">🌐 التصفح</button>
+      <button class="tab-item" id="tab-store">🛒 متجر النقاط</button>
+    </div>
+
+    <!-- 2. العنوان -->
+    <h1 class="page-title">لوحة التحكم الرئيسية</h1>
+
+    <!-- 3. كارت تسجيل الدخول والتفعيل -->
+    <div class="activation-card">
+      <h3>👤 تسجيل الدخول وتفعيل حسابك</h3>
+      <p>أدخل اسمك أو معرفك الفريد لإنشاء حسابك ورابط الإحالة الخاص بك أوتوماتيكياً:</p>
+      
+      <div class="input-group">
+        <button class="btn-primary" id="btn-activate">حفظ وتفعيل</button>
+        <input type="text" id="username-input" placeholder="أدخل اسمك (مثل: osama)">
+      </div>
+    </div>
+
+    <!-- 4. كارت الرصيد الحالي -->
+    <div class="stat-card">
+      <div class="stat-title">رصيدك الحالي</div>
+      <div class="stat-value" id="user-balance">0.00 جنيه</div>
+    </div>
+
+    <!-- 5. كارت النقاط المجمعة -->
+    <div class="stat-card">
+      <div class="stat-title">نقاطك المجمعة</div>
+      <div class="stat-value" id="user-points">0 نقطة</div>
+    </div>
+
+  </div>
+
+</body>
+</html>
