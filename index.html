@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>منصة المكافآت والبطولات</title>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --accent: #f59e0b;
+      --bg: #f1f5f9;
+      --card-bg: #ffffff;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --success: #10b981;
+      --danger: #ef4444;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family:  Tajawal , sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      padding: 15px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .app-container {
+      width: 100%;
+      max-width: 480px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+      border: 1px solid var(--border);
+    }
+
+    /* Header & Points */
+    .header-card {
+      text-align: center;
+      background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    }
+
+    .header-card h2 {
+      font-size: 1.5rem;
+      margin-bottom: 8px;
+    }
+
+    .points-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #eff6ff;
+      color: var(--primary);
+      padding: 8px 18px;
+      border-radius: 20px;
+      font-weight: bold;
+      font-size: 1.1rem;
+      margin: 10px 0;
+      border: 1px solid #bfdbfe;
+    }
+
+    .referral-box {
+      margin-top: 15px;
+      display: flex;
+      gap: 8px;
+    }
+
+    .referral-box input {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.85rem;
+      background: #f8fafc;
+      text-align: left;
+      direction: ltr;
+    }
+
+    /* Buttons */
+    .btn {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-size: 0.9rem;
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    .btn-block {
+      width: 100%;
+    }
+
+    /* Tasks Section */
+    .section-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .task-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .task-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 12px;
+      background: #f8fafc;
+      border-radius: 8px;
+      font-size: 0.9rem;
+    }
+
+    .task-status {
+      font-weight: bold;
+      color: var(--accent);
+    }
+
+    /* Lucky Wheel / Grid */
+    .wheel-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .grid-card {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 5px;
+      text-align: center;
+      font-size: 0.85rem;
+      font-weight: bold;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 75px;
+      transition: all 0.2s;
+    }
+
+    .grid-card.spin-btn {
+      background: var(--danger);
+      color: white;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3);
+    }
+
+    .grid-card.active {
+      border-color: var(--accent);
+      background: #fef3c7;
+      transform: scale(1.05);
+    }
+
+    /* Tournament */
+    .tournament-card {
+      border-right: 4px solid var(--primary);
+    }
+
+    .tournament-status {
+      color: var(--accent);
+      font-size: 0.85rem;
+      margin: 8px 0 12px 0;
+    }
+
+    /* Social Feed */
+    .post-box textarea {
+      width: 100%;
+      height: 70px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px;
+      resize: none;
+      font-size: 0.9rem;
+      margin-bottom: 8px;
+      outline: none;
+    }
+
+    .feed-list {
+      margin-top: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .feed-item {
+      background: #f8fafc;
+      padding: 10px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      border-right: 3px solid var(--primary);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-container">
+
+    <!-- 1. Header & Points -->
+    <div class="card header-card">
+      <h2>مرحباً بك! 👋</h2>
+      <div>رصيد نقاطك الحالي:</div>
+      <div class="points-badge">
+        <span>💎</span> <span id="user-points">0</span> نقطة
+      </div>
+      
+      <div class="referral-box">
+        <input type="text" id="ref-link" readonly value="https://na82-beep.github.io/?ref=user123">
+        <button class="btn" onclick="copyReferral()">نسخ الرابط</button>
+      </div>
+    </div>
+
+    <!-- 2. Daily Tasks -->
+    <div class="card">
+      <div class="section-title">📋 قائمة المهام اليومية</div>
+      <ul class="task-list">
+        <li class="task-item">
+          <span>• دعوة 5 أعضاء</span>
+          <span class="task-status">0/5</span>
+        </li>
+        <li class="task-item">
+          <span>• تصفح قسم المنشورات (10 دقائق)</span>
+          <span class="task-status" id="timer-browse">10:00</span>
+        </li>
+        <li class="task-item">
+          <span>• الوقت النشط بالموقع (30 دقيقة)</span>
+          <span class="task-status" id="timer-active">30:00</span>
+        </li>
+        <li class="task-item">
+          <span>• مشاركة منشور في قسم التصفح</span>
+          <span class="task-status" id="post-status">لم تكتمل</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- 3. Lucky Wheel / Grid -->
+    <div class="card">
+      <div class="section-title">🎰 عجلة بطاقات الحظ</div>
+      <p style="font-size: 0.8rem; color: var(--text-muted);">اضغط للبدء، وسيدور المربع الأحمر ليحدد جائزتك!</p>
+      
+      <div class="wheel-grid">
+        <div class="grid-card" id="slot-0">🎁 10 نقاط</div>
+        <div class="grid-card" id="slot-1">🔥 50 نقطة</div>
+        <div class="grid-card" id="slot-2">⌚ ساعة ذكية</div>
+        
+        <div class="grid-card" id="slot-7">💵 جائزة كاش</div>
+        <div class="grid-card spin-btn" onclick="spinWheel()">🎯 إبدأ الدوران</div>
+        <div class="grid-card" id="slot-3">🌟 200 نقطة</div>
+        
+        <div class="grid-card" id="slot-6">🎁 5 نقاط</div>
+        <div class="grid-card" id="slot-5">💎 100 نقطة</div>
+        <div class="grid-card" id="slot-4">❌ حظ أوفر</div>
+      </div>
+    </div>
+
+    <!-- 4. Tournament Section -->
+    <div class="card tournament-card">
+      <div class="section-title">🏆 البطولة الحالية (8 مقاعد)</div>
+      <div class="tournament-status">الحالة: بانتظار انضمام اللاعبين...</div>
+      <button class="btn btn-block" onclick="joinTournament(this)">حجز مقعد الآن</button>
+    </div>
+
+    <!-- 5. Social Feed -->
+    <div class="card">
+      <div class="section-title">📝 قسم التصفح والمشاركات</div>
+      <div class="post-box">
+        <textarea id="post-input" placeholder="اكتب مشاركتك هنا... شارك أفكارك مع الأعضاء!"></textarea>
+        <button class="btn btn-block" onclick="addPost()">نشر المنشور</button>
+      </div>
+      <div class="feed-list" id="feed-list">
+        <div class="feed-item">مرحباً بكل الأعضاء الجدد في المنصة! 🎉</div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // System State
+    let points = 0;
+    let isSpinning = false;
+    let activeTime = 30 * 60; // 30 mins in seconds
+    let browseTime = 10 * 60; // 10 mins in seconds
+
+    // Dynamic Referral Link setup
+    document.getElementById( ref-link ).value = window.location.origin + window.location.pathname +  ?ref=  + Math.floor(1000 + Math.random() * 9000);
+
+    // Copy Referral
+    function copyReferral() {
+      const copyText = document.getElementById("ref-link");
+      copyText.select();
+      navigator.clipboard.writeText(copyText.value);
+      alert("تم نسخ رابط الإحالة بنجاح!");
+    }
+
+    // Active Timers
+    setInterval(() => {
+      if (activeTime > 0) {
+        activeTime--;
+        let m = Math.floor(activeTime / 60).toString().padStart(2,  0 );
+        let s = (activeTime % 60).toString().padStart(2,  0 );
+        document.getElementById( timer-active ).innerText = `${m}:${s}`;
+      }
+      if (browseTime > 0) {
+        browseTime--;
+        let m = Math.floor(browseTime / 60).toString().padStart(2,  0 );
+        let s = (browseTime % 60).toString().padStart(2,  0 );
+        document.getElementById( timer-browse ).innerText = `${m}:${s}`;
+      }
+    }, 1000);
+
+    // Spin Cards System
+    const slots = [0, 1, 2, 3, 4, 5, 6, 7];
+    const prizes = [
+      { name: "10 نقاط", val: 10 },
+      { name: "50 نقطة", val: 50 },
+      { name: "ساعة ذكية ⌚", val: 0, special: true },
+      { name: "200 نقطة", val: 200 },
+      { name: "حظ أوفر ❌", val: 0 },
+      { name: "100 نقطة", val: 100 },
+      { name: "5 نقاط", val: 5 },
+      { name: "جائزة كاش 💵", val: 0, special: true }
+    ];
+
+    function spinWheel() {
+      if (isSpinning) return;
+      isSpinning = true;
+
+      let currentStep = 0;
+      let totalSteps = 20 + Math.floor(Math.random() * 8); // Random stopping index
+      let speed = 100;
+
+      function highlightNext() {
+        slots.forEach(i => document.getElementById(`slot-${i}`).classList.remove( active ));
+        let activeSlot = slots[currentStep % slots.length];
+        document.getElementById(`slot-${activeSlot}`).classList.add( active );
+
+        currentStep++;
+        if (currentStep < totalSteps) {
+          setTimeout(highlightNext, speed);
+        } else {
+          isSpinning = false;
+          let winningIndex = (currentStep - 1) % slots.length;
+          let prize = prizes[winningIndex];
+
+          if (prize.special) {
+            alert(`🎉 مبروك! لقد فزت بـ: ${prize.name}`);
+          } else if (prize.val > 0) {
+            points += prize.val;
+            document.getElementById( user-points ).innerText = points;
+            alert(`🎉 مبروك! حصلت على ${prize.val} نقطة!`);
+          } else {
+            alert(`❌ حظ أوفر في المرة القادمة!`);
+          }
+        }
+      }
+      highlightNext();
+    }
+
+    // Join Tournament
+    function joinTournament(btn) {
+      btn.innerText = "تم حجز المقعد ✅";
+      btn.style.background = "var(--success)";
+      btn.disabled = true;
+    }
+
+    // Social Feed Posting
+    function addPost() {
+      const text = document.getElementById( post-input ).value;
+      if (!text.trim()) return;
+
+      const feed = document.getElementById( feed-list );
+      const newItem = document.createElement( div );
+      newItem.className =  feed-item ;
+      newItem.innerText = text;
+      feed.prepend(newItem);
+
+      document.getElementById( post-input ).value =   ;
+      document.getElementById( post-status ).innerText =  تمت بنجاح ✅ ;
+      document.getElementById( post-status ).style.color =  var(--success) ;
+    }
+  </script>
+</body>
+</html>
