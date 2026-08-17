@@ -17,15 +17,15 @@
 body{
     background:#f5f7fb;
     color:#222;
-    padding-bottom:80px;
+    padding-bottom:85px;
 }
 
 /* Header */
 .header{
     background:linear-gradient(135deg,#16a085,#1abc9c);
     color:white;
-    padding:22px 18px 28px;
-    border-radius:0 0 25px 25px;
+    padding:22px 18px 30px;
+    border-radius:0 0 28px 28px;
 }
 
 .header-top{
@@ -35,14 +35,14 @@ body{
 }
 
 .logo{
-    font-size:27px;
+    font-size:28px;
     font-weight:bold;
 }
 
 .notification{
     background:rgba(255,255,255,.2);
-    width:42px;
-    height:42px;
+    width:44px;
+    height:44px;
     border-radius:50%;
     display:flex;
     align-items:center;
@@ -56,12 +56,12 @@ body{
 
 .welcome h2{
     font-size:22px;
-    margin-bottom:7px;
+    margin-bottom:8px;
 }
 
 .welcome p{
-    opacity:.9;
     font-size:14px;
+    opacity:.9;
 }
 
 /* Balance */
@@ -69,8 +69,8 @@ body{
     background:white;
     margin:-18px 18px 20px;
     position:relative;
-    border-radius:18px;
-    padding:18px;
+    border-radius:20px;
+    padding:20px;
     box-shadow:0 5px 20px rgba(0,0,0,.08);
 }
 
@@ -80,7 +80,7 @@ body{
 }
 
 .points{
-    font-size:30px;
+    font-size:32px;
     font-weight:bold;
     margin-top:5px;
     color:#16a085;
@@ -94,19 +94,21 @@ body{
 .balance-info{
     display:flex;
     justify-content:space-between;
-    margin-top:14px;
+    margin-top:15px;
     font-size:13px;
 }
 
 .balance-info div{
-    color:#666;
+    color:#777;
 }
 
 .balance-info strong{
     color:#222;
+    display:block;
+    margin-top:5px;
 }
 
-/* Sections */
+/* Main */
 .container{
     padding:0 18px;
 }
@@ -115,16 +117,11 @@ body{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    margin:22px 0 13px;
+    margin:23px 0 14px;
 }
 
 .section-title h3{
-    font-size:18px;
-}
-
-.section-title a{
-    color:#16a085;
-    font-size:13px;
+    font-size:19px;
 }
 
 /* Cards */
@@ -136,8 +133,8 @@ body{
 
 .card{
     background:white;
-    border-radius:17px;
-    padding:17px 12px;
+    border-radius:18px;
+    padding:18px 12px;
     text-align:center;
     box-shadow:0 3px 12px rgba(0,0,0,.05);
     cursor:pointer;
@@ -149,15 +146,15 @@ body{
 }
 
 .icon{
-    width:52px;
-    height:52px;
+    width:55px;
+    height:55px;
     margin:auto;
-    border-radius:15px;
+    border-radius:16px;
     background:#e8f8f5;
     display:flex;
     align-items:center;
     justify-content:center;
-    font-size:26px;
+    font-size:28px;
 }
 
 .card h4{
@@ -178,43 +175,42 @@ body{
     border-radius:20px;
     padding:20px;
     margin-top:15px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
 }
 
-.featured-text h3{
+.featured h3{
     font-size:18px;
-    margin-bottom:7px;
+    margin-bottom:8px;
 }
 
-.featured-text p{
+.featured p{
     font-size:12px;
     opacity:.8;
+    margin-bottom:15px;
 }
 
 .btn{
     border:0;
     background:#1abc9c;
     color:white;
-    padding:10px 15px;
-    border-radius:10px;
+    padding:11px 18px;
+    border-radius:11px;
     font-weight:bold;
+    cursor:pointer;
 }
 
-/* Bottom navigation */
+/* Bottom */
 .bottom-nav{
     position:fixed;
     bottom:0;
     right:0;
     left:0;
-    height:70px;
+    height:72px;
     background:white;
     display:flex;
     justify-content:space-around;
     align-items:center;
     box-shadow:0 -3px 15px rgba(0,0,0,.1);
-    z-index:100;
+    z-index:50;
 }
 
 .nav-item{
@@ -224,7 +220,7 @@ body{
     cursor:pointer;
 }
 
-.nav-item .nav-icon{
+.nav-icon{
     font-size:22px;
     margin-bottom:4px;
 }
@@ -233,31 +229,241 @@ body{
     color:#16a085;
     font-weight:bold;
 }
+
+/* Login */
+#authPage{
+    min-height:100vh;
+    background:linear-gradient(135deg,#16a085,#1abc9c);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+}
+
+.auth-box{
+    background:white;
+    width:100%;
+    max-width:420px;
+    border-radius:25px;
+    padding:28px 22px;
+    box-shadow:0 10px 35px rgba(0,0,0,.15);
+}
+
+.auth-logo{
+    text-align:center;
+    font-size:32px;
+    font-weight:bold;
+    color:#16a085;
+    margin-bottom:8px;
+}
+
+.auth-subtitle{
+    text-align:center;
+    color:#777;
+    font-size:13px;
+    margin-bottom:25px;
+}
+
+.auth-box h2{
+    text-align:center;
+    margin-bottom:20px;
+}
+
+.input{
+    width:100%;
+    border:1px solid #ddd;
+    padding:14px;
+    border-radius:12px;
+    margin-bottom:12px;
+    font-size:14px;
+    outline:none;
+}
+
+.input:focus{
+    border-color:#16a085;
+}
+
+.auth-btn{
+    width:100%;
+    border:0;
+    padding:14px;
+    border-radius:12px;
+    background:#16a085;
+    color:white;
+    font-size:15px;
+    font-weight:bold;
+    cursor:pointer;
+    margin-top:5px;
+}
+
+.switch{
+    text-align:center;
+    margin-top:18px;
+    color:#777;
+    font-size:13px;
+}
+
+.switch span{
+    color:#16a085;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.forgot{
+    text-align:center;
+    margin-top:15px;
+    font-size:12px;
+    color:#16a085;
+    cursor:pointer;
+}
+
+.message{
+    display:none;
+    padding:10px;
+    border-radius:10px;
+    margin-bottom:12px;
+    text-align:center;
+    font-size:12px;
+    background:#ffecec;
+    color:#c0392b;
+}
+
+/* Account */
+.account-box{
+    background:white;
+    margin:20px 18px;
+    padding:20px;
+    border-radius:20px;
+    box-shadow:0 4px 15px rgba(0,0,0,.06);
+}
+
+.logout{
+    width:100%;
+    border:0;
+    background:#e74c3c;
+    color:white;
+    padding:13px;
+    border-radius:12px;
+    margin-top:15px;
+    cursor:pointer;
+}
 </style>
 </head>
 
 <body>
 
-<!-- Header -->
+<!-- ================= AUTH PAGE ================= -->
+
+<div id="authPage">
+
+    <div class="auth-box">
+
+        <div class="auth-logo">💰 أرباحي</div>
+
+        <div class="auth-subtitle">
+            اكسب النقاط واكتشف فرص الربح
+        </div>
+
+        <h2 id="authTitle">تسجيل الدخول</h2>
+
+        <div id="message" class="message"></div>
+
+        <!-- الاسم يظهر عند إنشاء الحساب فقط -->
+        <input
+            id="name"
+            class="input"
+            type="text"
+            placeholder="الاسم"
+            style="display:none;"
+        >
+
+        <input
+            id="email"
+            class="input"
+            type="email"
+            placeholder="البريد الإلكتروني"
+        >
+
+        <input
+            id="password"
+            class="input"
+            type="password"
+            placeholder="كلمة المرور"
+        >
+
+        <input
+            id="confirmPassword"
+            class="input"
+            type="password"
+            placeholder="تأكيد كلمة المرور"
+            style="display:none;"
+        >
+
+        <button id="authButton" class="auth-btn">
+            تسجيل الدخول
+        </button>
+
+        <div
+            id="forgot"
+            class="forgot"
+            onclick="resetPassword()"
+        >
+            نسيت كلمة المرور؟
+        </div>
+
+        <div class="switch">
+            <span id="switchText">
+                ليس لديك حساب؟
+            </span>
+
+            <span
+                id="switchButton"
+                onclick="switchAuth()"
+            >
+                إنشاء حساب
+            </span>
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ================= APP ================= -->
+
+<div id="app" style="display:none;">
+
 <header class="header">
 
     <div class="header-top">
-        <div class="logo">💰 أرباحي</div>
 
-        <div class="notification" onclick="showMessage()">
+        <div class="logo">
+            💰 أرباحي
+        </div>
+
+        <div class="notification">
             🔔
         </div>
+
     </div>
 
     <div class="welcome">
-        <h2>أهلاً بك في أرباحي 👋</h2>
-        <p>اكتشف طرق الربح واجمع النقاط واستمتع بالمكافآت.</p>
+
+        <h2>
+            أهلاً بك <span id="userName">👋</span>
+        </h2>
+
+        <p>
+            اكتشف طرق الربح واجمع النقاط واستمتع بالمكافآت.
+        </p>
+
     </div>
 
 </header>
 
 
 <!-- Balance -->
+
 <div class="balance">
 
     <div class="balance-title">
@@ -271,17 +477,17 @@ body{
     <div class="balance-info">
 
         <div>
-            المستوى<br>
+            المستوى
             <strong>مبتدئ</strong>
         </div>
 
         <div>
-            ترتيبك<br>
+            ترتيبك
             <strong>#---</strong>
         </div>
 
         <div>
-            الأرباح<br>
+            الأرباح
             <strong>0 جنيه</strong>
         </div>
 
@@ -292,44 +498,44 @@ body{
 
 <div class="container">
 
-    <!-- Main sections -->
     <div class="section-title">
         <h3>الأقسام الرئيسية</h3>
     </div>
 
+
     <div class="grid">
 
-        <div class="card" onclick="openSection( المقالات )">
+        <div class="card" onclick="openSection('المقالات')">
             <div class="icon">📚</div>
             <h4>المقالات</h4>
             <p>تعلم واربح النقاط</p>
         </div>
 
-        <div class="card" onclick="openSection( عجلة الجوائز )">
+        <div class="card" onclick="openSection('عجلة الجوائز')">
             <div class="icon">🎡</div>
             <h4>عجلة الجوائز</h4>
             <p>جوائز ومكافآت</p>
         </div>
 
-        <div class="card" onclick="openSection( المجتمع )">
+        <div class="card" onclick="openSection('المجتمع')">
             <div class="icon">👥</div>
             <h4>المجتمع</h4>
             <p>شارك وتفاعل</p>
         </div>
 
-        <div class="card" onclick="openSection( المتجر )">
+        <div class="card" onclick="openSection('المتجر')">
             <div class="icon">🛒</div>
             <h4>المتجر</h4>
             <p>استخدم نقاطك</p>
         </div>
 
-        <div class="card" onclick="openSection( المتصدرين )">
+        <div class="card" onclick="openSection('المتصدرين')">
             <div class="icon">🏆</div>
             <h4>المتصدرين</h4>
             <p>أفضل الأعضاء</p>
         </div>
 
-        <div class="card" onclick="openSection( المحفظة )">
+        <div class="card" onclick="openSection('المحفظة')">
             <div class="icon">💰</div>
             <h4>المحفظة</h4>
             <p>النقاط والأرباح</p>
@@ -338,85 +544,545 @@ body{
     </div>
 
 
-    <!-- Featured -->
     <div class="section-title">
         <h3>🎁 فرصة اليوم</h3>
     </div>
 
+
     <div class="featured">
 
-        <div class="featured-text">
-            <h3>اجمع المزيد من النقاط!</h3>
-            <p>تصفح المحتوى واكتشف طرق جديدة للربح.</p>
-        </div>
+        <h3>
+            اجمع المزيد من النقاط!
+        </h3>
 
-        <button class="btn" onclick="openSection( ابدأ الآن )">
-            ابدأ
+        <p>
+            تصفح المحتوى واكتشف طرق جديدة للربح.
+        </p>
+
+        <button
+            class="btn"
+            onclick="openSection('ابدأ الآن')"
+        >
+            ابدأ الآن
         </button>
 
     </div>
 
 
-    <!-- Promotion -->
     <div class="section-title">
         <h3>📢 الترويج</h3>
     </div>
 
-    <div class="card" onclick="openSection( ترويج المنشورات )">
-        <div class="icon">🚀</div>
-        <h4>روّج لمنشورك</h4>
-        <p>وصل إلى عدد أكبر من المستخدمين</p>
+
+    <div
+        class="card"
+        onclick="openSection('ترويج المنشورات')"
+    >
+
+        <div class="icon">
+            🚀
+        </div>
+
+        <h4>
+            روّج لمنشورك
+        </h4>
+
+        <p>
+            وصل إلى عدد أكبر من المستخدمين
+        </p>
+
+    </div>
+
+
+    <div class="account-box">
+
+        <h3>
+            👤 حسابي
+        </h3>
+
+        <p
+            id="accountEmail"
+            style="margin-top:10px;color:#777;font-size:13px;"
+        ></p>
+
+        <button
+            class="logout"
+            onclick="logout()"
+        >
+            تسجيل الخروج
+        </button>
+
     </div>
 
 </div>
 
 
-<!-- Bottom navigation -->
+<!-- Bottom Navigation -->
+
 <nav class="bottom-nav">
 
-    <div class="nav-item active" onclick="navigate( الرئيسية )">
+    <div
+        class="nav-item active"
+        onclick="navigate('الرئيسية')"
+    >
         <div class="nav-icon">🏠</div>
         الرئيسية
     </div>
 
-    <div class="nav-item" onclick="navigate( المقالات )">
+    <div
+        class="nav-item"
+        onclick="navigate('المقالات')"
+    >
         <div class="nav-icon">📚</div>
         المقالات
     </div>
 
-    <div class="nav-item" onclick="navigate( الجوائز )">
+    <div
+        class="nav-item"
+        onclick="navigate('الجوائز')"
+    >
         <div class="nav-icon">🎡</div>
         الجوائز
     </div>
 
-    <div class="nav-item" onclick="navigate( المجتمع )">
+    <div
+        class="nav-item"
+        onclick="navigate('المجتمع')"
+    >
         <div class="nav-icon">👥</div>
         المجتمع
     </div>
 
-    <div class="nav-item" onclick="navigate( حسابي )">
+    <div
+        class="nav-item"
+        onclick="navigate('حسابي')"
+    >
         <div class="nav-icon">👤</div>
         حسابي
     </div>
 
 </nav>
 
+</div>
 
-<script>
 
-function openSection(name){
-    alert("سيتم فتح قسم: " + name);
+<!-- ================= FIREBASE ================= -->
+
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+
+import {
+    getAuth,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    onAuthStateChanged,
+    signOut,
+    sendPasswordResetEmail,
+    updateProfile
+}
+from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+
+/* Firebase Configuration */
+
+const firebaseConfig = {
+
+    apiKey: "AIzaSyAxN8lTjpR7gm0DiN2ujfEWtUvsdO80C3k",
+
+    authDomain:
+        "osama-f8bdf.firebaseapp.com",
+
+    projectId:
+        "osama-f8bdf",
+
+    storageBucket:
+        "osama-f8bdf.firebasestorage.app",
+
+    messagingSenderId:
+        "367498765089",
+
+    appId:
+        "1:367498765089:web:401297eea11e0091039460",
+
+    measurementId:
+        "G-MG145Y064T"
+};
+
+
+/* Initialize Firebase */
+
+const app = initializeApp(firebaseConfig);
+
+const auth = getAuth(app);
+
+
+/* Elements */
+
+const authPage =
+    document.getElementById("authPage");
+
+const appPage =
+    document.getElementById("app");
+
+const authTitle =
+    document.getElementById("authTitle");
+
+const authButton =
+    document.getElementById("authButton");
+
+const switchButton =
+    document.getElementById("switchButton");
+
+const switchText =
+    document.getElementById("switchText");
+
+const nameInput =
+    document.getElementById("name");
+
+const emailInput =
+    document.getElementById("email");
+
+const passwordInput =
+    document.getElementById("password");
+
+const confirmPasswordInput =
+    document.getElementById("confirmPassword");
+
+const forgotButton =
+    document.getElementById("forgot");
+
+const message =
+    document.getElementById("message");
+
+
+let isRegister =
+    false;
+
+
+/* Show Message */
+
+function showMessage(text){
+
+    message.textContent = text;
+
+    message.style.display = "block";
 }
 
-function navigate(name){
-    alert("سيتم فتح: " + name);
+
+/* Hide Message */
+
+function hideMessage(){
+
+    message.textContent = "";
+
+    message.style.display = "none";
 }
 
-function showMessage(){
-    alert("لا توجد إشعارات جديدة 🔔");
-}
+
+/* Switch Login/Register */
+
+window.switchAuth = function(){
+
+    isRegister = !isRegister;
+
+    hideMessage();
+
+    if(isRegister){
+
+        authTitle.textContent =
+            "إنشاء حساب";
+
+        authButton.textContent =
+            "إنشاء الحساب";
+
+        switchText.textContent =
+            "لديك حساب بالفعل؟";
+
+        switchButton.textContent =
+            "تسجيل الدخول";
+
+        nameInput.style.display =
+            "block";
+
+        confirmPasswordInput.style.display =
+            "block";
+
+        forgotButton.style.display =
+            "none";
+
+    }else{
+
+        authTitle.textContent =
+            "تسجيل الدخول";
+
+        authButton.textContent =
+            "تسجيل الدخول";
+
+        switchText.textContent =
+            "ليس لديك حساب؟";
+
+        switchButton.textContent =
+            "إنشاء حساب";
+
+        nameInput.style.display =
+            "none";
+
+        confirmPasswordInput.style.display =
+            "none";
+
+        forgotButton.style.display =
+            "block";
+    }
+};
+
+
+/* Login / Register */
+
+authButton.addEventListener(
+    "click",
+    async function(){
+
+        hideMessage();
+
+        const email =
+            emailInput.value.trim();
+
+        const password =
+            passwordInput.value;
+
+        if(!email || !password){
+
+            showMessage(
+                "من فضلك أدخل البريد وكلمة المرور."
+            );
+
+            return;
+        }
+
+
+        try{
+
+            if(isRegister){
+
+                const name =
+                    nameInput.value.trim();
+
+                const confirmPassword =
+                    confirmPasswordInput.value;
+
+                if(!name){
+
+                    showMessage(
+                        "من فضلك أدخل اسمك."
+                    );
+
+                    return;
+                }
+
+                if(password.length < 6){
+
+                    showMessage(
+                        "كلمة المرور يجب أن تكون 6 أحرف على الأقل."
+                    );
+
+                    return;
+                }
+
+                if(password !== confirmPassword){
+
+                    showMessage(
+                        "كلمتا المرور غير متطابقتين."
+                    );
+
+                    return;
+                }
+
+
+                const result =
+                    await createUserWithEmailAndPassword(
+                        auth,
+                        email,
+                        password
+                    );
+
+
+                await updateProfile(
+                    result.user,
+                    {
+                        displayName:name
+                    }
+                );
+
+
+            }else{
+
+                await signInWithEmailAndPassword(
+                    auth,
+                    email,
+                    password
+                );
+
+            }
+
+        }catch(error){
+
+            console.log(error);
+
+            let text =
+                "حدث خطأ، حاول مرة أخرى.";
+
+            if(error.code ===
+                "auth/email-already-in-use"){
+
+                text =
+                    "هذا البريد مسجل بالفعل.";
+            }
+
+            if(error.code ===
+                "auth/invalid-email"){
+
+                text =
+                    "البريد الإلكتروني غير صحيح.";
+            }
+
+            if(error.code ===
+                "auth/invalid-credential"){
+
+                text =
+                    "البريد أو كلمة المرور غير صحيحة.";
+            }
+
+            if(error.code ===
+                "auth/weak-password"){
+
+                text =
+                    "كلمة المرور ضعيفة.";
+            }
+
+            showMessage(text);
+        }
+
+    }
+);
+
+
+/* Password Reset */
+
+window.resetPassword = async function(){
+
+    const email =
+        emailInput.value.trim();
+
+    if(!email){
+
+        showMessage(
+            "اكتب بريدك الإلكتروني أولًا."
+        );
+
+        return;
+    }
+
+    try{
+
+        await sendPasswordResetEmail(
+            auth,
+            email
+        );
+
+        alert(
+            "تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني."
+        );
+
+    }catch(error){
+
+        showMessage(
+            "تعذر إرسال رابط إعادة التعيين."
+        );
+
+    }
+
+};
+
+
+/* Logout */
+
+window.logout = async function(){
+
+    await signOut(auth);
+
+};
+
+
+/* Watch Authentication */
+
+onAuthStateChanged(
+    auth,
+    function(user){
+
+        if(user){
+
+            authPage.style.display =
+                "none";
+
+            appPage.style.display =
+                "block";
+
+
+            const name =
+                user.displayName ||
+                "صديقي";
+
+            document.getElementById(
+                "userName"
+            ).textContent =
+                name + " 👋";
+
+
+            document.getElementById(
+                "accountEmail"
+            ).textContent =
+                user.email;
+
+        }else{
+
+            authPage.style.display =
+                "flex";
+
+            appPage.style.display =
+                "none";
+
+        }
+
+    }
+);
+
+
+/* Temporary Navigation */
+
+window.openSection =
+    function(name){
+
+        alert(
+            "قسم " + name +
+            " سيتم بناؤه في الخطوة القادمة 🚀"
+        );
+
+    };
+
+
+window.navigate =
+    function(name){
+
+        alert(
+            "صفحة " + name +
+            " سيتم بناؤها قريبًا 🚀"
+        );
+
+    };
 
 </script>
 
 </body>
-  </html>
+</html>
