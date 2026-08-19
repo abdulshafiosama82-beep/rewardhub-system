@@ -12,8 +12,8 @@
     "next": "15.5.4",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "firebase": "^12.1.0",
-    "firebase-admin": "^13.2.0"
+    "@supabase/supabase-js": "latest",
+    "@supabase/ssr": "latest"
   },
   "devDependencies": {
     "@types/node": "^22",
